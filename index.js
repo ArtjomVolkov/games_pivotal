@@ -1,11 +1,15 @@
-const express = require('express')
-const app = express()
-const port = 8080
-const swaggerUi = require('swagger-ui-express')
-const yamljs = require('yamljs')
-const swaggerDoucemnt = yamljs.load('./docs/swagger.yaml');
+const express = require('express');
+const cors = require('cors');
+const req = require('express/lib/request');
+const swaggerUi = require('swagger-ui-express');
+const yamljs = require('yamljs');
+const swaggerDocument = yamljs.load('./docs/swagger.yaml');
 
-app.use(express.json())
+const app = express();
+app.use(cors());
+app.use(express.json());
+const port = 8080;
+
 
 const games = [
     {id: 1,name:"CS2",price: 10.99},
@@ -53,7 +57,7 @@ app.delete('/games/:id',(req,res)=>{
     res.status(204).send({error:"No content"})
 })
 
-app.use('/docs',swaggerUi.serve,swaggerUi.setup(swaggerDoucemnt))
+app.use('/docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 
 app.listen(port,()=>{
     console.log(`Api up at: http://localhost:${port}`)
